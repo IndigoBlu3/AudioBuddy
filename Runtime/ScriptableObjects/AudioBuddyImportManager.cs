@@ -9,7 +9,7 @@ namespace AudioBuddyTool
     [CreateAssetMenu(fileName = "Audio Buddy Importer", menuName = "AudioBuddy/Importer")]
     public class AudioBuddyImportManager : ScriptableObject
     {
-        public string CollectionAddress;
+        public string CollectionAddress = "Paste the path to where you want AudioBuddy to build the database in here";
         public List<AudioBuddyObject> ABObjectCollection
         {
             get
@@ -50,13 +50,10 @@ namespace AudioBuddyTool
         public List<AudioBuddyObject> FindAllABObjects()
         {
             List<AudioBuddyObject> allObjects = new List<AudioBuddyObject>();
-            int nunu = 0;
             foreach (string GUID in AssetDatabase.FindAssets("t:AudioBuddyObject"))
             {
                 allObjects.Add(AssetDatabase.LoadAssetAtPath<AudioBuddyObject>(AssetDatabase.GUIDToAssetPath(GUID)));
-                nunu++;
             }
-            Debug.Log(nunu);
             return allObjects;
         }
 

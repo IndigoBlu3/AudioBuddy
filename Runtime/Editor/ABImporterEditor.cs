@@ -30,7 +30,7 @@ namespace AudioBuddyTool
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Audio Buddy Import Manager", EditorStyles.whiteLargeLabel);
-                EditorGUILayout.LabelField("Alpha: a0502", AudioBuddy.RightAligned);
+                EditorGUILayout.LabelField("Alpha: a0520", AudioBuddy.RightAligned);
                 EditorGUILayout.EndHorizontal();
             } //Title
             {
@@ -43,7 +43,7 @@ namespace AudioBuddyTool
                 EditorGUILayout.EndHorizontal();
             } //Subtitle + Show Database Button
 
-            importer.CollectionAddress = EditorGUILayout.TextField("Database Adress:", importer.CollectionAddress);
+            importer.CollectionAddress = EditorGUILayout.TextField("Database Address:", importer.CollectionAddress);
 
             {
                 EditorGUILayout.BeginHorizontal();
