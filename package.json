@@ -1,0 +1,17 @@
+{
+    "name": "com.nicelyevilgames.audiobuddypackage",
+    "version": "0.2.0",
+    "displayName": "AudioBuddy",
+    "description": "Audio buddy is the leightweight and hassle free audio manager",
+    "unity": "2019.1",
+
+    "keywords": [
+        "Audio",
+        "Manager",
+        "Tool"
+    ],
+    "author": {
+        "name": "Soren J. Dreesen",
+        "url": "https://sorenjdreesen.me"
+    }
+}
