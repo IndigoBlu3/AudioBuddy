@@ -17,7 +17,6 @@ namespace AudioBuddyTool
         private void OnEnable()
         {
             listObject = (AudioBuddyList)target;
-            listObject.Name = listObject.name;
         }
 
         public override void OnInspectorGUI()
@@ -43,7 +42,7 @@ namespace AudioBuddyTool
             }
             GUILayout.EndVertical();
 
-            listObject.Duration = 0;
+            //listObject.Duration = 0;
             _entryWidthCounter = 21;
             foreach (BuddyListEntry entry in listObject.SoundList)
             {
@@ -96,7 +95,7 @@ namespace AudioBuddyTool
                     EditorGUILayout.BeginHorizontal();
                     {
 
-                        EditorGUILayout.LabelField(entry.Name, EditorStyles.whiteLabel);
+                        EditorGUILayout.LabelField(entry.NameInList, EditorStyles.whiteLabel);
                         if (GUILayout.Button("X"))
                             _forDelete.Add(entry);
                     }
@@ -123,7 +122,7 @@ namespace AudioBuddyTool
                 entry.BuddyEntry = (AudioBuddyObject)EditorGUILayout.ObjectField(entry.BuddyEntry, typeof(AudioBuddyObject), false);
                 if (entry.BuddyEntry != null)
                 {
-                    entry.Name = entry.BuddyEntry.Name;
+                    entry.NameInList = entry.BuddyEntry.name;
                     if (GUILayout.Button("Reset"))
                     {
                         entry.BuddyEntry = null;

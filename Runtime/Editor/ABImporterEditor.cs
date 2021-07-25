@@ -30,12 +30,12 @@ namespace AudioBuddyTool
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Audio Buddy Import Manager", EditorStyles.whiteLargeLabel);
-                EditorGUILayout.LabelField("Build: a0520", AudioBuddy.RightAligned);
+                EditorGUILayout.LabelField("Build: a0725", AudioBuddy.RightAligned);
                 EditorGUILayout.EndHorizontal();
             } //Title
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"There are {importer.ABObjectCollection.Count} sounds in database");
+                EditorGUILayout.LabelField($"There are {importer.ABObjectCollection.Count} sounds in database {importer.Linked}");
                 if (GUILayout.Button($"{(_showDatabase ? "Hide Database" : "Show Database")}", EditorStyles.miniButtonRight))
                 {
                     _showDatabase = !_showDatabase;
@@ -79,6 +79,7 @@ namespace AudioBuddyTool
             if (GUILayout.Button("Discover new Audio Buddy Objects"))
             {
                 importer.DiscoverAudioBuddyObjects();
+                importer.RescanAudioBuddyObjects();
                 Debug.Log("Finished discovery");
             }
 

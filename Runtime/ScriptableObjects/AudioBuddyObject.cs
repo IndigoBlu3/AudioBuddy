@@ -8,8 +8,13 @@ namespace AudioBuddyTool
     [Serializable]
     public class AudioBuddyObject : ScriptableObject
     {
-        public string Name;
-        public float Duration;
+        public float Duration
+        {
+            get
+            {
+                return GetDuration();
+            }
+        }
         public float Volume = 1;
         public float Pitch = 1;
 

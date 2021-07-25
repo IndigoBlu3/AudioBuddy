@@ -50,7 +50,7 @@ namespace AudioBuddyTool
             GetTotalWeight();
             if (!_randomList.Any(e => !e.LockChance))
             {
-                Debug.LogWarning($"No unlocked chance could be found in {Name} so {_randomList[0].Name} had to be unlocked");
+                Debug.LogWarning($"No unlocked chance could be found in {name} so {_randomList[0].NameInRandom} had to be unlocked");
                 _randomList[0].LockChance = false;
                 RecalculateChances();
                 return;
@@ -119,7 +119,7 @@ namespace AudioBuddyTool
     public class BuddyRandomEntry
     {
         public AudioBuddyObject SoundObject;
-        public string Name = "New Random Entry";
+        public string NameInRandom = "New Random Entry";
         public float Weight = 1;
         public float Chance;
         public bool LockChance;

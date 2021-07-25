@@ -32,7 +32,6 @@ namespace AudioBuddyTool
         private void OnEnable()
         {
             soundObject = (AudioBuddySound)target;
-            soundObject.Name = soundObject.name;
             soundObject.CustomName = false;
         }
 
@@ -56,12 +55,11 @@ namespace AudioBuddyTool
                     if (!soundObject.CustomName)
                     {
                         soundObject.name = _newName;
-                        soundObject.Name = _newName;
                         AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(soundObject), _newName);
                     }
                     else
                     {
-                        _newName = soundObject.Name;
+                        _newName = soundObject.name;
                     }
                 }
                 EditorGUILayout.EndHorizontal();

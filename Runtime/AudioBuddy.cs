@@ -7,8 +7,32 @@ using UnityEngine;
 
 namespace AudioBuddyTool
 {
+    [InitializeOnLoad]
     public static class AudioBuddy
     {
+        static AudioBuddy()
+        {
+            RelinkImporter();
+            /*foreach (AudioBuddyObject item in Importer.ABObjectCollection)
+            {
+                Debug.Log($"{AssetDatabase.GetAssetPath(item)} - name: {item.name} -  Duration: {item.GetDuration()}");
+                if (item.Name == "")
+                {
+                    List<string> jojo = new List<string>();
+                    jojo.Add(AssetDatabase.GetAssetPath(item));
+                    AssetDatabase.ForceReserializeAssets(jojo,ForceReserializeAssetsOptions.ReserializeAssetsAndMetadata);
+                    Debug.LogWarning($"{AssetDatabase.GetAssetPath(item)} - name: {item.name} -- Duration: {item.GetDuration()}");
+                }
+
+            }
+            AssetDatabase.ForceReserializeAssets(Importer.ABObjectCollection.Select(o => AssetDatabase.GetAssetPath(o)),ForceReserializeAssetsOptions.ReserializeAssets);
+            */
+            /*
+            foreach (AudioBuddyObject aoitem in Importer.ABObjectCollection)
+            {
+                AssetDatabase.ForceReserializeAssets(AssetDatabase.GetAssetPath(aoitem));
+            }*/
+        }
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speaker)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, speaker.transform.position);
@@ -104,13 +128,10 @@ namespace AudioBuddyTool
         public static AudioBuddyObject FindSoundByName(string name)
         {
             //TODO improve by caching library of all AudioBuddySound objects in import manager database
-            foreach (string GUID in AssetDatabase.FindAssets("t:AudioBuddyObject"))
+            AudioBuddyObject abo = Importer.ABObjectCollection.Where(sound => sound.name == name).FirstOrDefault();
+            if (abo != null)
             {
-                AudioBuddyObject sound = AssetDatabase.LoadAssetAtPath<AudioBuddyObject>(AssetDatabase.GUIDToAssetPath(GUID));
-                if (sound.Name == name)
-                {
-                    return sound;
-                }
+                return abo;
             }
             throw new ArgumentOutOfRangeException(name, "No sound with this name could be found in the database");
         }
@@ -128,6 +149,32 @@ namespace AudioBuddyTool
                 return _manager;
             }
             set { _manager = value; } //TODO: Figure out why =value is nessecary, also ask about hideous expression in get
+        }
+
+        private static AudioBuddyImportManager _importer;
+        public static AudioBuddyImportManager Importer
+        {
+            get
+            {
+                if (_importer == null)
+                {
+                    _importer = AssetDatabase.LoadAssetAtPath<AudioBuddyImportManager>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:AudioBuddyImportManager").First()));
+                }
+                _importer.Linked = true;
+                return _importer;
+            }
+            set
+            {
+                _importer = value;
+            }
+        }
+
+        public static void RelinkImporter()
+        {
+            Importer.Linked = false;
+            Importer = null;
+            _importer = null;
+            Debug.Log($"Relinked AudioBuddy with Import Manager {Importer}");
         }
 
         private static GUIStyle _subtleBG;

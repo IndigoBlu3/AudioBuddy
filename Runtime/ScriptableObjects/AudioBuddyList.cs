@@ -53,7 +53,7 @@ namespace AudioBuddyTool
     [Serializable]
     public class BuddyListEntry
     {
-        public string Name = "New List Entry";
+        public string NameInList = "New List Entry";
         public float Delay; //TODO: Make sure only positive values are used
         public float Timestamp;
         public AudioBuddyObject BuddyEntry;

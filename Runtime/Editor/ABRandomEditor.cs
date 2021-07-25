@@ -18,7 +18,6 @@ namespace AudioBuddyTool
         private void OnEnable()
         {
             randomObject = (AudioBuddyRandom)target;
-            randomObject.Name = randomObject.name;
         }
 
         public override void OnInspectorGUI()
@@ -72,7 +71,7 @@ namespace AudioBuddyTool
             {
                 EditorGUILayout.BeginHorizontal();
                 {
-                    EditorGUILayout.LabelField(entry.Name, EditorStyles.whiteLabel);
+                    EditorGUILayout.LabelField(entry.NameInRandom, EditorStyles.whiteLabel);
                     if (GUILayout.Button("X"))
                         _forDelete.Add(entry);
                 }
@@ -104,7 +103,7 @@ namespace AudioBuddyTool
             entry.SoundObject = (AudioBuddyObject)EditorGUILayout.ObjectField(entry.SoundObject, typeof(AudioBuddyObject), false);
             if (entry.SoundObject != null)
             {
-                entry.Name = entry.SoundObject.Name;
+                entry.NameInRandom = entry.SoundObject.name;
                 if (GUILayout.Button("Reset"))
                 {
                     entry.SoundObject = null;

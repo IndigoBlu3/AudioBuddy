@@ -46,7 +46,7 @@ namespace AudioBuddyTool
             AudioBuddySpeaker player = NextAvailablePlayer();
             if (player == null)
             {
-                player = Instantiate(SpeakerPrefab).GetComponent<AudioBuddySpeaker>();
+                player = Instantiate(SpeakerPrefab,transform).GetComponent<AudioBuddySpeaker>();
                 Speakers.Add(player);
             }
             return player;
