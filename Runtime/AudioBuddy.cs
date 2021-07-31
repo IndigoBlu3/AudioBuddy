@@ -125,6 +125,7 @@ namespace AudioBuddyTool
             return player;
         }
 
+        [System.Diagnostics.DebuggerStepThrough]
         public static AudioBuddyObject FindSoundByName(string name)
         {
             //TODO improve by caching library of all AudioBuddySound objects in import manager database
@@ -133,6 +134,7 @@ namespace AudioBuddyTool
             {
                 return abo;
             }
+            
             throw new ArgumentOutOfRangeException(name, "No sound with this name could be found in the database");
         }
 
@@ -158,7 +160,13 @@ namespace AudioBuddyTool
             {
                 if (_importer == null)
                 {
-                    _importer = AssetDatabase.LoadAssetAtPath<AudioBuddyImportManager>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:AudioBuddyImportManager").First()));
+                    _importer = AssetDatabase.LoadAssetAtPath<AudioBuddyImportManager>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:AudioBuddyImportManager").FirstOrDefault()));
+                }
+                if (_importer == null)
+                {
+                    _importer = ScriptableObject.CreateInstance<AudioBuddyImportManager>();
+                    AssetDatabase.CreateAsset(_importer,"Assets/AudioBuddyImportManager.asset");
+                    Debug.LogWarning($"Automatically created an Audio Buddy Importer {_importer} at {AssetDatabase.GetAssetPath(_importer)}");
                 }
                 _importer.Linked = true;
                 return _importer;
@@ -171,9 +179,12 @@ namespace AudioBuddyTool
 
         public static void RelinkImporter()
         {
+            if (Importer == null)
+            {
+                return;
+            }
+
             Importer.Linked = false;
-            Importer = null;
-            _importer = null;
             Debug.Log($"Relinked AudioBuddy with Import Manager {Importer}");
         }
 

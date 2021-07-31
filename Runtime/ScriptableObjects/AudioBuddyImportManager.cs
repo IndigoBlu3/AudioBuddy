@@ -8,7 +8,7 @@ using UnityEngine;
 namespace AudioBuddyTool
 {
     [CreateAssetMenu(fileName = "Audio Buddy Importer", menuName = "AudioBuddy/Importer")]
-    public class AudioBuddyImportManager : ScriptableObject
+    public class AudioBuddyImportManager : ScriptableObject , ISerializationCallbackReceiver
     {
         public string CollectionAddress = "Paste the path to where you want AudioBuddy to build the database in here";
         public List<AudioBuddyObject> ABObjectCollection
@@ -88,6 +88,7 @@ namespace AudioBuddyTool
 
         public void CreateMissingAudioBuddyObjects()
         {
+            EnsureAssetDBPath();
             List<AudioBuddySound> onlySounds = new List<AudioBuddySound>();
             foreach (AudioBuddyObject sound in ABObjectCollection) //ABDatabase.Values)
             {
@@ -114,7 +115,6 @@ namespace AudioBuddyTool
         {
             foreach (AudioBuddyObject foundObject in FindAllABObjects().Where(o => !ABObjectCollection.Contains(o)))
             {
-                
                 if (ABObjectCollection.Select(o => o.name).Contains(foundObject.name)) //ABDatabase.ContainsKey(foundObject.name))
                 {
                     Debug.LogWarning($"The name of the sound {foundObject.name} is already in use! Please double check the naming of {foundObject}");
@@ -126,6 +126,7 @@ namespace AudioBuddyTool
                     //ABDatabase[foundObject.Name] = foundObject;
                 }
             }
+            EnsureAssetDBPath();
         }
 
         public void RebuildAudioBuddyObjectCollection()
@@ -163,6 +164,53 @@ namespace AudioBuddyTool
                 return;
             }
             Debug.LogError("Enter a valid path to build Audio Buddy database");
+        }
+
+        private void EnsureAssetDBPath()
+        {
+            if (!AssetDatabase.IsValidFolder(CollectionAddress))
+            {
+                if (ABObjectCollection.Count >= 1)
+                {
+                    CollectionAddress = TrimAssetPath(AssetDatabase.GetAssetPath(ABObjectCollection[0]));
+                    Debug.LogWarning($"Automatically set {CollectionAddress} as database adress from existing Audio Buddy Object");
+                }
+                else
+                {
+                    Debug.Log("Ensuring is Expensive");
+                    string firstABObject = AssetDatabase.FindAssets("t:AudioBuddyObject").FirstOrDefault();
+                    if (firstABObject != "")
+                    {
+                        CollectionAddress = TrimAssetPath(AssetDatabase.GUIDToAssetPath(firstABObject));
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Please enter a valid database path and rebuild sound objects.");
+                    }
+                }
+            }
+        }
+
+        protected string TrimAssetPath(string origPath)
+        {
+            bool backfound = false;
+            while (!backfound && origPath.Contains("/"))
+            {
+                backfound = origPath.EndsWith("/");
+                origPath = origPath.Substring(0, origPath.Length - 1);
+            }
+            return origPath;
+        }
+
+        public void OnBeforeSerialize()
+        {
+            //
+            //throw new NotImplementedException();
+        }
+
+        public void OnAfterDeserialize()
+        {
+            //throw new NotImplementedException();
         }
     }
 

@@ -6,8 +6,20 @@ using UnityEngine.Events;
 
 namespace AudioBuddyTool
 {
+
     public class AudioBuddySpeaker : MonoBehaviour
     {
+        private class DelayAwaiter : CustomYieldInstruction
+        {
+            private AudioBuddySpeaker _speaker;
+
+            public DelayAwaiter(AudioBuddySpeaker Speaker)
+            {
+                _speaker = Speaker;
+            }
+            public override bool keepWaiting => _speaker._listDelay > 0;
+        }
+
         public AudioBuddyObject SourceSound;
         public AudioSource SourcePlayer;
 
@@ -132,7 +144,7 @@ namespace AudioBuddyTool
         public IEnumerator PlayNextSoundDelayed(AudioBuddyObject soundObject)
         {
             _waitOver = false;
-            yield return new WaitWhile(() => _listDelay > 0);
+            yield return new DelayAwaiter(this);  //WaitWhile(() => _listDelay > 0);
             //yield return new WaitForSecondsRealtime(_playStack[0].SoundList[_positionStack[0]].Delay); //Potentionally more accurate with player playback time in samples
             PlaySound(soundObject);
             _waitOver = true;
