@@ -10,6 +10,15 @@ namespace AudioBuddyTool
     [CreateAssetMenu(fileName = "Audio Buddy Importer", menuName = "AudioBuddy/Importer")]
     public class AudioBuddyImportManager : ScriptableObject , ISerializationCallbackReceiver
     {
+
+        public void OnEnable()
+        {
+            AudioBuddyReferenceManager ReferenceManager = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
+            ReferenceManager.ImportManager = this;
+        }
+
+
+        public AudioBuddyReferenceManager ReferenceManager;
         public string CollectionAddress = "Paste the path to where you want AudioBuddy to build the database in here";
         public List<AudioBuddyObject> ABObjectCollection
         {
@@ -54,6 +63,7 @@ namespace AudioBuddyTool
 
         public bool Linked;
 
+        #if UNITY_EDITOR
         public void RescanAudioBuddyObjects()
         {
             ABObjectCollection.Clear();
@@ -65,7 +75,6 @@ namespace AudioBuddyTool
                 //ABDatabase[soundObject.Name] = soundObject;
             }
         }
-
         public List<AudioClip> FindAllClips()
         {
             List<AudioClip> allClips = new List<AudioClip>();
@@ -190,7 +199,7 @@ namespace AudioBuddyTool
                 }
             }
         }
-
+        #endif
         protected string TrimAssetPath(string origPath)
         {
             bool backfound = false;

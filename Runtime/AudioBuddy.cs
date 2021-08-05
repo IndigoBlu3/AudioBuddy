@@ -13,7 +13,7 @@ namespace AudioBuddyTool
         static AudioBuddy()
         {
             RelinkImporter();
-            /*foreach (AudioBuddyObject item in Importer.ABObjectCollection)
+            {/*foreach (AudioBuddyObject item in Importer.ABObjectCollection)
             {
                 Debug.Log($"{AssetDatabase.GetAssetPath(item)} - name: {item.name} -  Duration: {item.GetDuration()}");
                 if (item.Name == "")
@@ -27,11 +27,12 @@ namespace AudioBuddyTool
             }
             AssetDatabase.ForceReserializeAssets(Importer.ABObjectCollection.Select(o => AssetDatabase.GetAssetPath(o)),ForceReserializeAssetsOptions.ReserializeAssets);
             */
-            /*
-            foreach (AudioBuddyObject aoitem in Importer.ABObjectCollection)
-            {
-                AssetDatabase.ForceReserializeAssets(AssetDatabase.GetAssetPath(aoitem));
-            }*/
+                /*
+                foreach (AudioBuddyObject aoitem in Importer.ABObjectCollection)
+                {
+                    AssetDatabase.ForceReserializeAssets(AssetDatabase.GetAssetPath(aoitem));
+                }*/
+            }
         }
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speaker)
         {
@@ -146,11 +147,10 @@ namespace AudioBuddyTool
             {
                 if (_manager == null)
                 {
-                    _manager = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("AudioBuddyManagerPrefab").First()))).GetComponent<AudioBuddyManager>();
+                    _manager = GameObject.Instantiate(Referencer.ManagerPrefab).GetComponent<AudioBuddyManager>();
                 }
                 return _manager;
             }
-            set { _manager = value; } //TODO: Figure out why =value is nessecary, also ask about hideous expression in get
         }
 
         private static AudioBuddyImportManager _importer;
@@ -160,20 +160,31 @@ namespace AudioBuddyTool
             {
                 if (_importer == null)
                 {
-                    _importer = AssetDatabase.LoadAssetAtPath<AudioBuddyImportManager>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:AudioBuddyImportManager").FirstOrDefault()));
+                    _importer = Referencer.ImportManager;
                 }
-                if (_importer == null)
-                {
-                    _importer = ScriptableObject.CreateInstance<AudioBuddyImportManager>();
-                    AssetDatabase.CreateAsset(_importer,"Assets/AudioBuddyImportManager.asset");
-                    Debug.LogWarning($"Automatically created an Audio Buddy Importer {_importer} at {AssetDatabase.GetAssetPath(_importer)}");
-                }
+#if UNITY_EDITOR
+                    if (_importer == null)
+                    {
+                        _importer = ScriptableObject.CreateInstance<AudioBuddyImportManager>();
+                        AssetDatabase.CreateAsset(_importer,"Assets/AudioBuddyImportManager.asset");
+                        Debug.LogWarning($"Automatically created an Audio Buddy Importer {_importer} at {AssetDatabase.GetAssetPath(_importer)}");
+                    }
                 _importer.Linked = true;
+#endif
                 return _importer;
             }
-            set
+        }
+
+        private static AudioBuddyReferenceManager _referencer;
+        public static AudioBuddyReferenceManager Referencer
+        {
+            get
             {
-                _importer = value;
+                if (_referencer == null)
+                {
+                    _referencer = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
+                }
+                return _referencer;
             }
         }
 
