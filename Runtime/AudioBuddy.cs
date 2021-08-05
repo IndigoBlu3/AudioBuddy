@@ -8,35 +8,13 @@ using UnityEngine;
 #endif
 namespace AudioBuddyTool
 {
+    /*
 #if UNITY_EDITOR
     [InitializeOnLoad]
-#endif
+#endif */
     public static class AudioBuddy
     {
-        static AudioBuddy()
-        {
-            RelinkImporter();
-            {/*foreach (AudioBuddyObject item in Importer.ABObjectCollection)
-            {
-                Debug.Log($"{AssetDatabase.GetAssetPath(item)} - name: {item.name} -  Duration: {item.GetDuration()}");
-                if (item.Name == "")
-                {
-                    List<string> jojo = new List<string>();
-                    jojo.Add(AssetDatabase.GetAssetPath(item));
-                    AssetDatabase.ForceReserializeAssets(jojo,ForceReserializeAssetsOptions.ReserializeAssetsAndMetadata);
-                    Debug.LogWarning($"{AssetDatabase.GetAssetPath(item)} - name: {item.name} -- Duration: {item.GetDuration()}");
-                }
 
-            }
-            AssetDatabase.ForceReserializeAssets(Importer.ABObjectCollection.Select(o => AssetDatabase.GetAssetPath(o)),ForceReserializeAssetsOptions.ReserializeAssets);
-            */
-                /*
-                foreach (AudioBuddyObject aoitem in Importer.ABObjectCollection)
-                {
-                    AssetDatabase.ForceReserializeAssets(AssetDatabase.GetAssetPath(aoitem));
-                }*/
-            }
-        }
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speaker)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, speaker.transform.position);
@@ -200,7 +178,7 @@ namespace AudioBuddyTool
             Importer.Linked = false;
             Debug.Log($"Relinked AudioBuddy with Import Manager {Importer}");
         }
-
+#if UNITY_EDITOR
         private static GUIStyle _subtleBG;
         public static GUIStyle SubtleBG
         {
@@ -274,6 +252,7 @@ namespace AudioBuddyTool
                 }
             }
         }
+#endif
     }
 }
 
