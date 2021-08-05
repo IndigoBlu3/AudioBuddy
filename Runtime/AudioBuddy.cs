@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-
+#endif
 namespace AudioBuddyTool
 {
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
     public static class AudioBuddy
     {
         static AudioBuddy()
@@ -194,7 +197,6 @@ namespace AudioBuddyTool
             {
                 return;
             }
-
             Importer.Linked = false;
             Debug.Log($"Relinked AudioBuddy with Import Manager {Importer}");
         }
