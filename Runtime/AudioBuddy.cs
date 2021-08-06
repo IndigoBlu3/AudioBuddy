@@ -10,7 +10,10 @@ using UnityEditor;
 
 namespace AudioBuddyTool
 {
+#if UNITY_EDITOR
     [InitializeOnLoad]
+#endif
+
     public static class AudioBuddy
     {
         static AudioBuddy()
