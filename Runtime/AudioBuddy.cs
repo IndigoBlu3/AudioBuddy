@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
 #endif
+using UnityEngine;
+
 namespace AudioBuddyTool
 {
-    /*
-#if UNITY_EDITOR
     [InitializeOnLoad]
-#endif */
     public static class AudioBuddy
     {
+        static AudioBuddy()
+        {
+            RelinkImporter();
+        }
 
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speaker)
         {
@@ -67,6 +69,8 @@ namespace AudioBuddyTool
             return Manager.PlayAtLocation(abobject, 1f, location);
         }
 
+
+
         public static AudioBuddySpeaker AttachSound(string name, GameObject speaker)
         {
             AudioSource source = speaker.AddComponent<AudioSource>();
@@ -106,8 +110,7 @@ namespace AudioBuddyTool
             player.PlaySound(abobject, volumeMultiplier);
             return player;
         }
-
-        [System.Diagnostics.DebuggerStepThrough]
+        
         public static AudioBuddyObject FindSoundByName(string name)
         {
             //TODO improve by caching library of all AudioBuddySound objects in import manager database
@@ -119,7 +122,7 @@ namespace AudioBuddyTool
             
             throw new ArgumentOutOfRangeException(name, "No sound with this name could be found in the database");
         }
-
+        
         //Resources
         private static AudioBuddyManager _manager;
         public static AudioBuddyManager Manager
@@ -154,21 +157,21 @@ namespace AudioBuddyTool
 #endif
                 return _importer;
             }
-        }
-
-        private static AudioBuddyReferenceManager _referencer;
-        public static AudioBuddyReferenceManager Referencer
-        {
-            get
-            {
-                if (_referencer == null)
+        } 
+        
+                private static AudioBuddyReferenceManager _referencer;
+                public static AudioBuddyReferenceManager Referencer
                 {
-                    _referencer = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
+                    get
+                    {
+                        if (_referencer == null)
+                        {
+                            _referencer = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
+                        }
+                        return _referencer;
+                    }
                 }
-                return _referencer;
-            }
-        }
-
+                       
         public static void RelinkImporter()
         {
             if (Importer == null)
@@ -178,6 +181,8 @@ namespace AudioBuddyTool
             Importer.Linked = false;
             Debug.Log($"Relinked AudioBuddy with Import Manager {Importer}");
         }
+
+
 #if UNITY_EDITOR
         private static GUIStyle _subtleBG;
         public static GUIStyle SubtleBG

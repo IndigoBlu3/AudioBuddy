@@ -30,7 +30,7 @@ namespace AudioBuddyTool
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Audio Buddy Import Manager", EditorStyles.whiteLargeLabel);
-                EditorGUILayout.LabelField("Build: a0805", AudioBuddy.RightAligned);
+                EditorGUILayout.LabelField("Build: a0806", AudioBuddy.RightAligned);
                 EditorGUILayout.EndHorizontal();
             } //Title
             {
