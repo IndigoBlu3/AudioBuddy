@@ -91,6 +91,16 @@ namespace AudioBuddyTool
             PlaySound(SourceSound);
         }
 
+        public void StopSound()
+        {
+            _playStack.Clear();
+            _positionStack.Clear();
+            SourcePlayer.Stop();
+            _busy = false;
+            _waitOver = true;
+            _listDelay = 0;
+        }
+
         public void PlaySound(AudioBuddyObject soundObject, float volumeMultiplier)
         {
             _externalVolumeMultipilier = volumeMultiplier;
