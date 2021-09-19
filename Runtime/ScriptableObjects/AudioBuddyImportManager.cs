@@ -15,6 +15,7 @@ namespace AudioBuddyTool
         {
             AudioBuddyReferenceManager ReferenceManager = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
             ReferenceManager.ImportManager = this;
+            DiscoverAudioBuddyObjects();
         }
 
 
@@ -27,6 +28,7 @@ namespace AudioBuddyTool
                 if (_abObjectCollection == null)
                 {
                     _abObjectCollection = new List<AudioBuddyObject>();
+                    Debug.LogWarning("Created Database"); //BUG: Darf nicht jedes Mal, wenn die Engine gestartet wird neu created werden
                 }
                 return _abObjectCollection;
             }

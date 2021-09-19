@@ -34,7 +34,6 @@ namespace AudioBuddyTool
                 {
                     sum += entry.BuddyEntry.GetDuration() + Mathf.Max(entry.Delay, 0);
                 }
-
             }
             return sum;
         }

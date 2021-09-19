@@ -17,7 +17,7 @@ namespace AudioBuddyTool
         public AudioBuddySpeaker Play2D(AudioBuddyObject abobject, float volumeMultiplier)
         {
             AudioBuddySpeaker player = NextAvailablePlayerOrNew();
-            //TODO: Adjust rollof
+            
             player.SourcePlayer.spatialBlend = 0;
             player.PlaySound(abobject, volumeMultiplier);
             return player;
@@ -26,6 +26,8 @@ namespace AudioBuddyTool
         public AudioBuddySpeaker PlayAtLocation(AudioBuddyObject abobject, float volumeMultiplier, Vector3 location)
         {
             AudioBuddySpeaker player = NextAvailablePlayerOrNew();
+            //TODO Rollof
+            player.ReassignSpeaker();
             player.SourcePlayer.spatialBlend = 1;
             player.gameObject.transform.position = location;
             player.PlaySound(abobject, volumeMultiplier);
