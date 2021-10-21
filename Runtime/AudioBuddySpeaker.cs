@@ -65,7 +65,7 @@ namespace AudioBuddyTool
             OnPlayingNextSound += CheckForReaddLoopingSound;
         }
 
-        private void Update() //TODO: Turn this into single coroutine
+        private void Update()
         {
             if (_playbackList.Count > 0) //While sounds should be played
             {
@@ -125,7 +125,7 @@ namespace AudioBuddyTool
                     AddRandomToPlaybackQueue(random);
                     break;
                 default:
-                    throw new ArgumentException($"{nameof(SourceSound)} is not a valid AudioBuddyObject");
+                    throw new ArgumentException($"{nameof(SourceSound)} is not a valid AudioBuddyObject: {(SourceSound==null ?  "Assigned sound is null" : SourceSound.name)}");
                     //break;
             }
         }

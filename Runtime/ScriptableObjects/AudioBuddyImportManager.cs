@@ -11,14 +11,6 @@ namespace AudioBuddyTool
     public class AudioBuddyImportManager : ScriptableObject , ISerializationCallbackReceiver
     {
 
-        public void OnEnable()
-        {
-            AudioBuddyReferenceManager ReferenceManager = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
-            ReferenceManager.ImportManager = this;
-            DiscoverAudioBuddyObjects();
-        }
-
-
         public AudioBuddyReferenceManager ReferenceManager;
         public string CollectionAddress = "Paste the path to where you want AudioBuddy to build the database in here";
         public List<AudioBuddyObject> ABObjectCollection
@@ -39,6 +31,14 @@ namespace AudioBuddyTool
         }
         [SerializeField]
         private List<AudioBuddyObject> _abObjectCollection;
+        public List<AudioBuddyObject> FaultyABObjects
+        {
+            get
+            {
+                return _faultyABOjects ??= new List<AudioBuddyObject>();
+            }
+        }
+        private List<AudioBuddyObject> _faultyABOjects = new List<AudioBuddyObject>();
 
         /// <summary>
         /// Do not use this. The dictionary has not been fully implemented yet. Use ABObjectCollection instead
@@ -62,10 +62,19 @@ namespace AudioBuddyTool
 
         [SerializeField]
         private Dictionary<string, AudioBuddyObject> _abDatabase;
-
         public bool Linked;
+        public bool CreateABOjectsOnClipImport = true;
 
-        #if UNITY_EDITOR
+        public void OnEnable()
+        {
+            AudioBuddyReferenceManager ReferenceManager = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
+            ReferenceManager.ImportManager = this;
+            #if UNITY_EDITOR
+            DiscoverAudioBuddyObjects();
+            #endif
+        }
+
+#if UNITY_EDITOR
         public void RescanAudioBuddyObjects()
         {
             ABObjectCollection.Clear();
@@ -116,10 +125,20 @@ namespace AudioBuddyTool
                 //ABDatabase[absound.Name] = absound;
                 ABObjectCollection.Add(absound);
                 AssetDatabase.CreateAsset(absound, $"{CollectionAddress}/{newClip.name}.asset");
+                EditorUtility.SetDirty(absound);
                 newObjectCounter++;
             }
             DiscoverAudioBuddyObjects();
             Debug.Log($"Added {newObjectCounter} new Audio buddy Sounds to database at {CollectionAddress}");
+        }
+
+        public AudioBuddySound CreateAudioBuddySoundFromClip(AudioClip clip)
+        {
+            AudioBuddySound absound = CreateInstance<AudioBuddySound>();
+            absound.File = clip;
+            ABObjectCollection.Add(absound);
+            AssetDatabase.CreateAsset(absound, $"{CollectionAddress}/{clip.name}.asset");
+            return absound;
         }
 
         public void DiscoverAudioBuddyObjects()
@@ -147,18 +166,7 @@ namespace AudioBuddyTool
                 Debug.LogWarning("Rebuilding Audio Buddy database. This might take a bit...");
 
                 RescanAudioBuddyObjects();
-                List<string> deleteFailed = new List<string>();
-                //AssetDatabase.DeleteAssets(ABDatabase.Values.Select(o => AssetDatabase.GetAssetPath(o)).ToArray(), deleteFailed);
-                AssetDatabase.DeleteAssets(ABObjectCollection.Select(o => AssetDatabase.GetAssetPath(o)).ToArray(), deleteFailed);
-                if (deleteFailed.Count > 0)
-                {
-                    Debug.LogWarning($"Deleting of {deleteFailed.Count} AudioBuddy objects failed! Failed assets are:");
-                    foreach (string remainingSound in deleteFailed)
-                    {
-                        Debug.LogWarning(remainingSound);
-                    }
-                }
-                ABObjectCollection.Clear();
+                DeletePartOfDatabase(ABObjectCollection);
                 //ABDatabase.Clear();
                 foreach (AudioClip clip in FindAllClips())
                 {
@@ -169,7 +177,7 @@ namespace AudioBuddyTool
                     AssetDatabase.CreateAsset(absound, $"{CollectionAddress}/{clip.name}.asset");
                     EditorUtility.SetDirty(absound);
                 }
-                Debug.Log("Creating Instances done. Renaming assets...");
+                Debug.Log("Creating Instances done. Saving assets...");
                 AssetDatabase.SaveAssets();
                 Debug.Log($"Done rebuilding Audio Buddy database into {CollectionAddress}");
                 return;
@@ -200,6 +208,35 @@ namespace AudioBuddyTool
                     }
                 }
             }
+        }
+
+        public void RegisterFaultyABObject(AudioBuddyObject abobject)
+        {
+            if (!_faultyABOjects.Contains(abobject))
+            {
+                _faultyABOjects.Add(abobject);
+            }
+        }
+
+        public void DeleteFaultyABObjects()
+        {
+            DeletePartOfDatabase(FaultyABObjects);
+            Debug.LogWarning("Deleted AudioBuddyObjects marked as faulty");
+        }
+
+        private void DeletePartOfDatabase(List<AudioBuddyObject> toBeDeleted)
+        {
+            List<string> deleteFailed = new List<string>();
+            AssetDatabase.DeleteAssets(toBeDeleted.Select(o => AssetDatabase.GetAssetPath(o)).ToArray(), deleteFailed);
+            if (deleteFailed.Count > 0)
+            {
+                Debug.LogWarning($"Deleting of {deleteFailed.Count} AudioBuddy objects failed! Failed assets are:");
+                foreach (string remainingSound in deleteFailed)
+                {
+                    Debug.LogWarning(remainingSound);
+                }
+            }
+            toBeDeleted.Clear();
         }
         #endif
         protected string TrimAssetPath(string origPath)

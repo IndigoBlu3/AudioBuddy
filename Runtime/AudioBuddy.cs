@@ -123,7 +123,6 @@ namespace AudioBuddyTool
             {
                 return abo;
             }
-            
             throw new ArgumentOutOfRangeException(name, "No sound with this name could be found in the database");
         }
         

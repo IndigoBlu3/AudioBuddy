@@ -16,7 +16,8 @@ namespace AudioBuddyTool
         private bool _showDatabase;
         private bool _confirmRebuild;
         private int _dbCounter;
-        private bool _dbbroken;
+        private bool _showFaulty;
+
 
         private void OnEnable()
         {
@@ -47,7 +48,7 @@ namespace AudioBuddyTool
 
             {
                 EditorGUILayout.BeginHorizontal();
-
+                //Rebuild Button
                 if (!_confirmRebuild)
                 {
                     if (GUILayout.Button("Rebuild Entire Database"))
@@ -146,7 +147,44 @@ namespace AudioBuddyTool
                     EditorGUILayout.LabelField("Please import sounds before showing the database", EditorStyles.centeredGreyMiniLabel);
                 }
 
-            }
+            } //Show Database
+
+            else
+            {
+                {
+                    //Automatic Sound import
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("Automatically create on sound import?");
+                    importer.CreateABOjectsOnClipImport = EditorGUILayout.Toggle(importer.CreateABOjectsOnClipImport);
+                    EditorGUILayout.EndHorizontal();
+                }
+
+
+                
+            } //Show Options
+
+            {//Faulty sounds
+                if (importer.FaultyABObjects.Count() > 0)
+                {
+                    EditorGUILayout.Space(15);
+                    EditorGUILayout.LabelField($"AudioBuddy has found {importer.FaultyABObjects.Count} objects that might be faulty", EditorStyles.boldLabel);
+                    if (GUILayout.Button("Delete faulty AudioBuddyObjects"))
+                    {
+                        importer.DeleteFaultyABObjects();
+                    }
+                    if (GUILayout.Button($"{(_showFaulty ? "Hide" : "Show")} faulty objects"))
+                    {
+                        _showFaulty = !_showFaulty;
+                    }
+                    if (_showFaulty)
+                    {
+                        foreach (AudioBuddyObject faulty in importer.FaultyABObjects)
+                        {
+                            EditorGUILayout.LabelField(faulty.name,EditorStyles.miniLabel);
+                        }
+                    }
+                }
+            }//Faulty sounds
 
             if (EditorGUI.EndChangeCheck())
             {
