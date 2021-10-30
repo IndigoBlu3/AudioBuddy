@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c75566890060834ea4dad30fa52b8b8, type: 3}
+  m_Name: AudioBuddyImportManager
+  m_EditorClassIdentifier: 
+  ReferenceManager: {fileID: 0}
+  CollectionAddress: Assets/Sounds/SoundObjects
+  _abObjectCollection:
+  - {fileID: 11400000, guid: 629782a250a00c64ab7559a85de1b867, type: 2}
+  - {fileID: 11400000, guid: 64baf1510605b0d4e988bd63716accec, type: 2}
+  - {fileID: 11400000, guid: 1ac38371f8380be4288499907b699d33, type: 2}
+  - {fileID: 11400000, guid: b564f663b0cc2d8489e4b9dee2e159ec, type: 2}
+  - {fileID: 11400000, guid: f1a56e000e7a6ec4d90808fd112eb1e2, type: 2}
+  - {fileID: 11400000, guid: add8e62df1d9d3c4e965d531037ba6e7, type: 2}
+  - {fileID: 11400000, guid: dcd93813f577b5f47b0402121b24d443, type: 2}
+  - {fileID: 11400000, guid: b3edbd7da310e404c9d574d492ed1032, type: 2}
+  - {fileID: 11400000, guid: 52a6f87a6bc31254c8b94d8619766b7f, type: 2}
+  - {fileID: 11400000, guid: baf707e02d8d55846b6b584de8cb5898, type: 2}
+  - {fileID: 11400000, guid: fda40d8726491114297d83dee151195b, type: 2}
+  - {fileID: 11400000, guid: bc17f4f412cdcff43b4878fcbc24ca5d, type: 2}
+  - {fileID: 11400000, guid: 9ec62e0de800a8a42a87706be79fc49f, type: 2}
+  - {fileID: 11400000, guid: 42a19d8d6b7627141a2c8dd0ed9259b8, type: 2}
+  - {fileID: 11400000, guid: 2c7a5b16c94030249aa02a1c98f6da92, type: 2}
+  - {fileID: 11400000, guid: 65e374dd79f399f47935f5848fae9a46, type: 2}
+  - {fileID: 11400000, guid: 358ccc0157eb83347a351836edb5e7a3, type: 2}
+  - {fileID: 11400000, guid: 4c20ff0211c90a045b0b6b7dccf453da, type: 2}
+  - {fileID: 11400000, guid: e786f668f85338744afeae75121de2fb, type: 2}
+  - {fileID: 11400000, guid: cc60e5f5246a9204ea1277a1808f8f54, type: 2}
+  - {fileID: 11400000, guid: 1c5e53ad884250144abc00a4449859fa, type: 2}
+  Linked: 1
+  CreateABOjectsOnClipImport: 1
