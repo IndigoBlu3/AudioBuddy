@@ -17,10 +17,10 @@ namespace AudioBuddyTool
                 //string a = abImportManager.CollectionAddress;
                 string clipName = ExtractAssetNameFromPath(assetPath);
                 AudioBuddySound absound = ScriptableObject.CreateInstance<AudioBuddySound>();
-                abImportManager.ABObjectCollection.Add(absound);
                 AssetDatabase.CreateAsset(absound, $"{abImportManager.CollectionAddress}/{clipName}.asset");
+                abImportManager.ABObjectCollection.Add(absound);
                 absound.FilePath = assetPath;
-                Debug.Log($"Automaticall created AudioBuddySound for {clipName}");
+                Debug.Log($"Automaticall created AudioBuddySound for {absound.FilePath}");
             }
         }
 

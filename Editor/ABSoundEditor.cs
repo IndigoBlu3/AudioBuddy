@@ -69,8 +69,7 @@ namespace AudioBuddyTool
             soundObject.Volume = EditorGUILayout.Slider("Volume", soundObject.Volume, 0, 1);
             soundObject.Pitch = EditorGUILayout.Slider("Pitch", soundObject.Pitch, -4, 4);
             soundObject.File = (AudioClip)EditorGUILayout.ObjectField("File", soundObject.File, typeof(AudioClip), false);
-
-            EditorGUILayout.SelectableLabel(soundObject.FilePath);
+            EditorGUILayout.LabelField($"File Path: {soundObject.FilePath}",EditorStyles.label);
 
             if (EditorGUI.EndChangeCheck())
             {

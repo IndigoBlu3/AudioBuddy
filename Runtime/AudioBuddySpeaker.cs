@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace AudioBuddyTool
 {
@@ -10,7 +9,6 @@ namespace AudioBuddyTool
     public class AudioBuddySpeaker : MonoBehaviour
     {
         //Sound references
-        public AudioBuddyObject SourceSound;
         public AudioSource SourcePlayer;
 
         //Delegates
@@ -28,9 +26,10 @@ namespace AudioBuddyTool
         public Action<AudioBuddySpeaker> OnSpeakerReassign;
 
         //Fields
-        private float _externalVolumeMultipilier;
+        private float _externalVolumeMultipilier = 1f;
+        private float _internalVolumeMultipilier = 1f;
         private bool _managedDynamically = true;
-
+        
         //List playback
         [SerializeField]
         private bool _busyPlayingList; //is true while this player is playing back a list
@@ -90,18 +89,7 @@ namespace AudioBuddyTool
                     _deleteNext = true;
                 }
             }
-        }
-
-        public void StopSound()
-        {
-            //Should I OnSoundFinished.Invoke(_playbackList[0]); with a sanity check?
-            _playbackList.Clear();
-            SourcePlayer.Stop();
-            _timeTillNextSound = 0;
-            IsLooping = false;
-            _busyPlayingList = false;
-            _deleteNext = true;
-            SourcePlayer.clip = null;
+            UpdateSourcePlayerVolume();
         }
 
         /// <summary>
@@ -111,8 +99,7 @@ namespace AudioBuddyTool
         /// <param name="volumeMultiplier"></param>
         public void PlaySound(AudioBuddyObject soundObject, float volumeMultiplier)
         {
-            _externalVolumeMultipilier = volumeMultiplier;
-            SourceSound = soundObject;
+            _externalVolumeMultipilier = volumeMultiplier * soundObject.Volume;
             switch (soundObject)
             {
                 case AudioBuddySound sound:
@@ -125,7 +112,7 @@ namespace AudioBuddyTool
                     AddRandomToPlaybackQueue(random);
                     break;
                 default:
-                    throw new ArgumentException($"{nameof(SourceSound)} is not a valid AudioBuddyObject: {(SourceSound==null ?  "Assigned sound is null" : SourceSound.name)}");
+                    throw new ArgumentException($"{nameof(soundObject)} is not a valid AudioBuddyObject: {(soundObject == null ?  "Assigned sound is null" : soundObject.name)}");
                     //break;
             }
         }
@@ -137,12 +124,20 @@ namespace AudioBuddyTool
         {
             PlaySound(soundObject, 1f);
         }
+        /// <summary>
+        /// Gives the speaker a sound to play. If it is already playing sounds from a list it will just play them in order. This should not be called while the speaker is busy.
+        /// </summary>
+        /// <param name="name"></param>
+        public void PlaySound(string name)
+        {
+            PlaySound(AudioBuddy.FindSoundByName(name), 1f);
+        }
 
         private void PlaySimpleSound(AudioBuddySound sound)
         {
             _timeTillNextSound += sound.Duration;
             SourcePlayer.clip = sound.File;
-            SourcePlayer.volume = sound.Volume * _externalVolumeMultipilier;
+            SourcePlayer.volume = sound.Volume * _externalVolumeMultipilier * _internalVolumeMultipilier;
             SourcePlayer.pitch = sound.Pitch;
             SourcePlayer.Play();
         }
@@ -187,11 +182,32 @@ namespace AudioBuddyTool
             }
         }
         /// <summary>
-        /// Checks whether this speaker is currently busy with playing sounds or not.
-        /// </summary>
         public bool CheckAvailable()
         {
             return (SourcePlayer.isPlaying || _busyPlayingList) && (_managedDynamically);
+        }
+
+        private void UpdateSourcePlayerVolume()
+        {
+            SourcePlayer.volume = (SourcePlayer.clip == null) ? _internalVolumeMultipilier : _internalVolumeMultipilier * _externalVolumeMultipilier;
+        }
+
+        /// <summary>
+        /// Stops any sounds played currently.
+        /// </summary>
+        public void StopSound()
+        {
+            //Should I OnSoundFinished.Invoke(_playbackList[0]); with a sanity check?
+            _playbackList.Clear();
+            SourcePlayer.Stop();
+            _timeTillNextSound = 0;
+            IsLooping = false;
+            _busyPlayingList = false;
+            _deleteNext = true;
+            SourcePlayer.clip = null;
+            StopAllCoroutines();
+            _internalVolumeMultipilier = 1;
+            _externalVolumeMultipilier = 1;
         }
 
         /// <summary>
@@ -217,6 +233,74 @@ namespace AudioBuddyTool
             _managedDynamically = true;
             StopSound();
             OnSpeakerReassign?.Invoke(this);
+        }
+
+        //Fades
+        /// <summary>
+        /// Animates the internal volume. Use AudioBuddy.FadeIn() if you dont want to start the sound manually.
+        /// </summary>
+        /// <param name="Time"></param>
+        /// <param name="endVolume"></param>
+        public void FadeIn(float Time, float endVolume)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time,Mathf.RoundToInt(Time)*AudioBuddy.FadeStepsPerSecond,0f,endVolume,false));
+        }
+        /// <summary>
+        /// Animates the internal volume. Use AudioBuddy.FadeIn() if you dont want to start the sound manually.
+        /// </summary>
+        /// <param name="Time"></param>
+        public void FadeIn(float Time)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time, Mathf.RoundToInt(Time) * AudioBuddy.FadeStepsPerSecond, 0f, 1f, false));
+        }
+        /// <summary>
+        /// Animates the internal volume. Use AudioBuddy.FadeOut() if you dont want to start the sound manually.
+        /// </summary>
+        /// <param name="Time"></param>
+        /// <param name="startVolume"></param>
+        public void FadeOut(float Time, float startVolume)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time, Mathf.RoundToInt(Time) * AudioBuddy.FadeStepsPerSecond, startVolume, 0f, true));
+        }
+        /// <summary>
+        /// Animates the internal volume. Use AudioBuddy.FadeOut() if you dont want to start the sound manually.
+        /// </summary>
+        /// <param name="Time"></param>
+        public void FadeOut(float Time)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time, Mathf.RoundToInt(Time) * AudioBuddy.FadeStepsPerSecond, 1f, 0f, true));
+        }
+        /// <summary>
+        /// Animates the internal volume to fade from a one to another value. Does not start the playback of a sound.
+        /// </summary>
+        /// <param name="Time"></param>
+        /// <param name="startVolume"></param>
+        /// <param name="endVolume"></param>
+        public void FadeBetween(float Time, float startVolume, float endVolume)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time, Mathf.RoundToInt(Time) * AudioBuddy.FadeStepsPerSecond, startVolume, endVolume, false));
+        }
+        /// <summary>
+        /// Animates the internal volume to fade from the current volume to a target value. Does not start the playback of a sound.
+        /// </summary>
+        /// <param name="Time"></param>
+        /// <param name="endVolume"></param>
+        public void FadeTo(float Time, float endVolume)
+        {
+            StartCoroutine(InterpolateVolumeLinearly(Time, Mathf.RoundToInt(Time) * AudioBuddy.FadeStepsPerSecond, _internalVolumeMultipilier, endVolume, false));
+        }
+        private IEnumerator InterpolateVolumeLinearly(float Time, int Steps, float startVolume, float endVolume, bool stopAfterFade)
+        {
+            _internalVolumeMultipilier = startVolume;
+            for (int i = 1; i <= Steps; i++)
+            {
+                yield return new WaitForSeconds(Time/Steps);
+                _internalVolumeMultipilier = startVolume + ((endVolume - startVolume) * (float)i/Steps);
+            }
+            if (stopAfterFade)
+            {
+                StopSound();
+            }
         }
     }
 }

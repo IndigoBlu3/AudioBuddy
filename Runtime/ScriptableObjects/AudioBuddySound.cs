@@ -1,7 +1,8 @@
 ﻿using System;
-using UnityEditor;
-#if UNITY_EDITOR
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace AudioBuddyTool
@@ -10,17 +11,29 @@ namespace AudioBuddyTool
     [Serializable]
     public class AudioBuddySound : AudioBuddyObject
     {
+
+        [SerializeField]
+        private AudioClip _file;
+        public bool IsLoop;
+        public bool CustomName;
+        [SerializeField]
+        public string FilePath;
         public AudioClip File
         {
             get
             {
-                if (_file == null)
+                if (_file == null && FilePath != "")
                 {
 #if UNITY_EDITOR
                     _file = AssetDatabase.LoadAssetAtPath<AudioClip>(FilePath);
+                    Debug.Log($"Recover from Path {FilePath}");
                     if (_file == null)
                     {
                         AudioBuddy.Importer.RegisterFaultyABObject(this);
+                    }
+                    //else
+                    {
+                        //Debug.Log($"Retrieved {File}");
                     }
 #endif
                 }
@@ -29,15 +42,16 @@ namespace AudioBuddyTool
             set
             {
                 _file = value;
-                #if UNITY_EDITOR
-                FilePath = AssetDatabase.GetAssetPath(File);
-                #endif
+#if UNITY_EDITOR
+                if (File != null)
+                {
+                    FilePath = AssetDatabase.GetAssetPath(File);
+                    Debug.Log($"Set from file to {FilePath}");
+                }
+#endif
             }
         }
-        private AudioClip _file;
-        public bool IsLoop;
-        public bool CustomName;
-        public string FilePath;
+
 
         public override float GetDuration()
         {

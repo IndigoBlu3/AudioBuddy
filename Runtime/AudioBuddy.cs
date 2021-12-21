@@ -13,21 +13,26 @@ namespace AudioBuddyTool
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-
     public static class AudioBuddy
     {
+        /// <summary>
+        /// Determines how many steps there will be in a second when AudioBuddy fades sound volumes
+        /// </summary>
+        public static int FadeStepsPerSecond = 30;
+
         static AudioBuddy()
         {
             RelinkImporter();
         }
 
-        public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speaker)
+        //3D Sounds
+        public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speakerPosition)
         {
-            return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, speaker.transform.position);
+            return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, speakerPosition.transform.position);
         }
-        public static AudioBuddySpeaker Play(string name, GameObject speaker)
+        public static AudioBuddySpeaker Play(string name, GameObject speakerPosition)
         {
-            return Manager.PlayAtLocation(FindSoundByName(name), 1f, speaker.transform.position);
+            return Manager.PlayAtLocation(FindSoundByName(name), 1f, speakerPosition.transform.position);
         }
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, Vector3 location)
         {
@@ -37,25 +42,6 @@ namespace AudioBuddyTool
         {
             return Manager.PlayAtLocation(FindSoundByName(name), 1f, location);
         }
-
-        public static AudioBuddySpeaker Play(string name, float volumeMultiplier)
-        {
-            return Manager.Play2D(FindSoundByName(name), volumeMultiplier);
-        }
-        public static AudioBuddySpeaker Play(string name)
-        {
-            return Manager.Play2D(FindSoundByName(name), 1f);
-        }
-
-        public static AudioBuddySpeaker Play(AudioBuddyObject abobject)
-        {
-            return Manager.Play2D(abobject, 1f);
-        }
-        public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier)
-        {
-            return Manager.Play2D(abobject, volumeMultiplier);
-        }
-
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier, GameObject speakerPosition)
         {
             return Manager.PlayAtLocation(abobject, volumeMultiplier, speakerPosition.transform.position);
@@ -72,8 +58,97 @@ namespace AudioBuddyTool
         {
             return Manager.PlayAtLocation(abobject, 1f, location);
         }
+        //2D Sounds
+        public static AudioBuddySpeaker Play(string name, float volumeMultiplier)
+        {
+            return Manager.Play2D(FindSoundByName(name), volumeMultiplier);
+        }
+        public static AudioBuddySpeaker Play(string name)
+        {
+            return Manager.Play2D(FindSoundByName(name), 1f);
+        }
+        public static AudioBuddySpeaker Play(AudioBuddyObject abobject)
+        {
+            return Manager.Play2D(abobject, 1f);
+        }
+        public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier)
+        {
+            return Manager.Play2D(abobject, volumeMultiplier);
+        }
+        //Fades
+        public static AudioBuddySpeaker FadeIn(string name, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(name);
+            speaker.FadeIn(Time,targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject);
+            speaker.FadeIn(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeIn(string name, GameObject speakerPosition, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(name, speakerPosition);
+            speaker.FadeIn(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, GameObject speakerPosition, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject, speakerPosition);
+            speaker.FadeIn(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeIn(string name, Vector3 location, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(name, location);
+            speaker.FadeIn(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, Vector3 location, float Time, float targetVolume = 1f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject, location);
+            speaker.FadeIn(Time, targetVolume);
+            return speaker;
+        }
 
-
+        public static AudioBuddySpeaker FadeOut(string name, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(name);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeOut(string name, GameObject speakerPosition, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(name, speakerPosition);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, GameObject speakerPosition, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject, speakerPosition);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeOut(string name, Vector3 location, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(name, location);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, Vector3 location, float Time, float targetVolume = 0f)
+        {
+            AudioBuddySpeaker speaker = Play(abobject, location);
+            speaker.FadeOut(Time, targetVolume);
+            return speaker;
+        }
 
         public static AudioBuddySpeaker AttachSound(string name, GameObject speaker)
         {
@@ -150,12 +225,17 @@ namespace AudioBuddyTool
                     _importer = Referencer.ImportManager;
                 }
 #if UNITY_EDITOR
-                    if (_importer == null)
-                    {
-                        _importer = ScriptableObject.CreateInstance<AudioBuddyImportManager>();
-                        AssetDatabase.CreateAsset(_importer,"Assets/AudioBuddyImportManager.asset");
-                        Debug.LogWarning($"Automatically created an Audio Buddy Importer {_importer} at {AssetDatabase.GetAssetPath(_importer)}");
-                    }
+                string firstGUID = AssetDatabase.FindAssets("t:AudioBuddyImportManager").FirstOrDefault();
+                if (firstGUID != "")
+                {
+                    _importer = AssetDatabase.LoadAssetAtPath<AudioBuddyImportManager>(AssetDatabase.GUIDToAssetPath(firstGUID));
+                }
+                if (_importer == null)
+                {
+                    _importer = ScriptableObject.CreateInstance<AudioBuddyImportManager>();
+                    AssetDatabase.CreateAsset(_importer,"Assets/AudioBuddyImportManager.asset");
+                    Debug.LogWarning($"Automatically created an Audio Buddy Importer {_importer} at {AssetDatabase.GetAssetPath(_importer)}");
+                }
                 _importer.Linked = true;
 #endif
                 return _importer;
