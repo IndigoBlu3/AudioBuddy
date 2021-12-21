@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a31e82dd2db5ad34aabe73155d28a095, type: 3}
+  m_Name: AudioBuddyReferenceManager
+  m_EditorClassIdentifier: 
+  ManagerPrefab: {fileID: 634254022778987001, guid: 8253a46cc81548f4783b107a3b01954b,
+    type: 3}
+  SpeakerPrefab: {fileID: 2743178311634615151, guid: 8c79db6d37abad644815c994cb36c988,
+    type: 3}
+  ImportManager: {fileID: 11400000, guid: 3db6f50d88404694c9e56d7e3e21ba8f, type: 2}
