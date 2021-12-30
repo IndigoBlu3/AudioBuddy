@@ -64,7 +64,7 @@ namespace AudioBuddyTool
         [SerializeField]
         private Dictionary<string, AudioBuddyObject> _abDatabase;
         public bool Linked;
-        public bool CreateABOjectsOnClipImport = true;
+        public bool CreateABOjectsOnClipImport = false;
 
         public void OnEnable()
         {
