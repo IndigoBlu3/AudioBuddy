@@ -14,12 +14,11 @@ namespace AudioBuddyTool
             abImportManager ??= AudioBuddy.Importer;
             if (abImportManager.CreateABOjectsOnClipImport && AssetDatabase.IsValidFolder(abImportManager.CollectionAddress))
             {
-                //string a = abImportManager.CollectionAddress;
                 string clipName = ExtractAssetNameFromPath(assetPath);
                 AudioBuddySound absound = ScriptableObject.CreateInstance<AudioBuddySound>();
                 AssetDatabase.CreateAsset(absound, $"{abImportManager.CollectionAddress}/{clipName}.asset");
                 abImportManager.ABObjectCollection.Add(absound);
-                absound.FilePath = assetPath;
+                absound.FilePath = assetPath; // This for some reason gets reset to default values at some stage
                 abImportManager.SoundsCreatedThroughImport.Add(absound,assetPath);
                 Debug.Log($"Automatically created AudioBuddySound for {clipName} at {absound.FilePath}");
             }
