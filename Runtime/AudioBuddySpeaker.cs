@@ -93,7 +93,7 @@ namespace AudioBuddyTool
         }
 
         /// <summary>
-        /// Gives the speaker a sound to play. If it is already playing sounds from a list it will just play them in order. This should not be called while the speaker is busy.
+        /// Gives the speaker a sound to play. If it is already playing sounds from a list it will add them to the playback list and  play them in order. This should not be called while the speaker is busy.
         /// </summary>
         /// <param name="soundObject"></param>
         /// <param name="volumeMultiplier"></param>
@@ -182,6 +182,9 @@ namespace AudioBuddyTool
             }
         }
         /// <summary>
+        /// Returns true when the speaker is idle and marked for dynamic management by AudioBuddy
+        /// </summary>
+        /// <returns></returns>
         public bool CheckAvailable()
         {
             return (SourcePlayer.isPlaying || _busyPlayingList) && (_managedDynamically);
@@ -193,7 +196,7 @@ namespace AudioBuddyTool
         }
 
         /// <summary>
-        /// Stops any sounds played currently.
+        /// Stops any sounds currently played and clears all playback of lists
         /// </summary>
         public void StopSound()
         {
@@ -211,7 +214,7 @@ namespace AudioBuddyTool
         }
 
         /// <summary>
-        /// This will allow the Audio Buddy system to manage this speaker. After this has been activated it should not be deactivated anymore as this player might get used to play crucial audio elsewhere.
+        /// This will allow the AudioBuddy system to manage this speaker. After this has been activated it should not be deactivated anymore as this player might get used to play crucial audio elsewhere.
         /// </summary>
         public void EnableDynamicManagement()
         {
@@ -219,18 +222,18 @@ namespace AudioBuddyTool
         }
 
         /// <summary>
-        /// Will take this speaker object out of the dynamic management and allows the user full control over it without Audio Buddy interfering.
+        /// Will take this speaker object out of the dynamic management and allows the user full control over it without AudioBuddy interfering.
         /// </summary>
         public void DisableDynamicManagement()
         {
             _managedDynamically = false;
         }
         /// <summary>
-        /// Stops all sounds and gives this speaker object back to the dynamic management of AudioBuddy's audio sources. Will call OnSpeakerReassign so you can choose to unsubsrice from actions of this speaker.
+        /// Stops all sounds and gives this speaker object back to the dynamic management of AudioBuddy's audio sources. Will also call OnSpeakerReassign so you can choose to unsubsrice from actions of this speaker.
         /// </summary>
         public void ReassignSpeaker()
         {
-            _managedDynamically = true;
+            EnableDynamicManagement();
             StopSound();
             OnSpeakerReassign?.Invoke(this);
         }

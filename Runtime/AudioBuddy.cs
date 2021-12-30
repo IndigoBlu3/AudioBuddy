@@ -26,130 +26,300 @@ namespace AudioBuddyTool
         }
 
         //3D Sounds
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified GameObject position
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="speakerPosition"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, GameObject speakerPosition)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, speakerPosition.transform.position);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified GameObject position
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="speakerPosition"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name, GameObject speakerPosition)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), 1f, speakerPosition.transform.position);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified world location
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier, Vector3 location)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), volumeMultiplier, location);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified world location
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name, Vector3 location)
         {
             return Manager.PlayAtLocation(FindSoundByName(name), 1f, location);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified GameObject position
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="speakerPosition"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier, GameObject speakerPosition)
         {
             return Manager.PlayAtLocation(abobject, volumeMultiplier, speakerPosition.transform.position);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified GameObject position
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="speakerPosition"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, GameObject speakerPosition)
         {
             return Manager.PlayAtLocation(abobject, 1f, speakerPosition.transform.position);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified world location
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier, Vector3 location)
         {
             return Manager.PlayAtLocation(abobject, volumeMultiplier, location);
         }
+        /// <summary>
+        /// AudioBuddy plays a 3D sound at the specified world location
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, Vector3 location)
         {
             return Manager.PlayAtLocation(abobject, 1f, location);
         }
         //2D Sounds
+        /// <summary>
+        /// AudioBuddy plays a 2D sound with an additional volume multiplier
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name, float volumeMultiplier)
         {
             return Manager.Play2D(FindSoundByName(name), volumeMultiplier);
         }
+        /// <summary>
+        /// AudioBuddy plays a 2D sound
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(string name)
         {
             return Manager.Play2D(FindSoundByName(name), 1f);
         }
+        /// <summary>
+        /// AudioBuddy plays a 2D sound
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject)
         {
             return Manager.Play2D(abobject, 1f);
         }
+        /// <summary>
+        /// AudioBuddy plays a 2D sound with an additional volume multiplier
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker Play(AudioBuddyObject abobject, float volumeMultiplier)
         {
             return Manager.Play2D(abobject, volumeMultiplier);
         }
         //Fades
-        public static AudioBuddySpeaker FadeIn(string name, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 2D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(string name, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(name);
-            speaker.FadeIn(Time,targetVolume);
+            speaker.FadeIn(time,targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 2D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(abobject);
-            speaker.FadeIn(Time, targetVolume);
+            speaker.FadeIn(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeIn(string name, GameObject speakerPosition, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="speakerPosition"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(string name, GameObject speakerPosition, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(name, speakerPosition);
-            speaker.FadeIn(Time, targetVolume);
+            speaker.FadeIn(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, GameObject speakerPosition, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="speakerPosition"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, GameObject speakerPosition, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(abobject, speakerPosition);
-            speaker.FadeIn(Time, targetVolume);
+            speaker.FadeIn(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeIn(string name, Vector3 location, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="location"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(string name, Vector3 location, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(name, location);
-            speaker.FadeIn(Time, targetVolume);
+            speaker.FadeIn(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, Vector3 location, float Time, float targetVolume = 1f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade in to a target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="location"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeIn(AudioBuddyObject abobject, Vector3 location, float time, float targetVolume = 1f)
         {
             AudioBuddySpeaker speaker = Play(abobject, location);
-            speaker.FadeIn(Time, targetVolume);
+            speaker.FadeIn(time, targetVolume);
             return speaker;
         }
-
-        public static AudioBuddySpeaker FadeOut(string name, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 2D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(string name, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(name);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 2D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(abobject);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeOut(string name, GameObject speakerPosition, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="speakerPosition"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(string name, GameObject speakerPosition, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(name, speakerPosition);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, GameObject speakerPosition, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="speakerPosition"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, GameObject speakerPosition, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(abobject, speakerPosition);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeOut(string name, Vector3 location, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="location"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(string name, Vector3 location, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(name, location);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, Vector3 location, float Time, float targetVolume = 0f)
+        /// <summary>
+        /// AudioBuddy animates the volume of a 3D sound to linearly fade out to zero or target volume over a set time. AudioBuddySpeakers have additional functionality for custom fades.
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="location"></param>
+        /// <param name="time"></param>
+        /// <param name="targetVolume"></param>
+        /// <returns></returns>
+        public static AudioBuddySpeaker FadeOut(AudioBuddyObject abobject, Vector3 location, float time, float targetVolume = 0f)
         {
             AudioBuddySpeaker speaker = Play(abobject, location);
-            speaker.FadeOut(Time, targetVolume);
+            speaker.FadeOut(time, targetVolume);
             return speaker;
         }
-
+        /// <summary>
+        /// AudioBuddy attaches a 3D sound to the target GameObject so that the sound moves along with the object
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker AttachSound(string name, GameObject speaker)
         {
             AudioSource source = speaker.AddComponent<AudioSource>();
@@ -160,6 +330,12 @@ namespace AudioBuddyTool
             player.PlaySound(FindSoundByName(name), 1f);
             return player;
         }
+        /// <summary>
+        /// AudioBuddy attaches a 3D sound to the target GameObject so that the sound moves along with the object
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker AttachSound(AudioBuddyObject abobject, GameObject speaker)
         {
             AudioSource source = speaker.AddComponent<AudioSource>();
@@ -169,6 +345,13 @@ namespace AudioBuddyTool
             player.PlaySound(abobject, 1f);
             return player;
         }
+        /// <summary>
+        /// AudioBuddy attaches a 3D sound to the target GameObject so that the sound moves along with the object
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker AttachSound(string name, float volumeMultiplier, GameObject speaker)
         {
             AudioSource source = speaker.AddComponent<AudioSource>();
@@ -179,6 +362,13 @@ namespace AudioBuddyTool
             player.PlaySound(FindSoundByName(name), volumeMultiplier);
             return player;
         }
+        /// <summary>
+        /// AudioBuddy attaches a 3D sound to the target GameObject so that the sound moves along with the object
+        /// </summary>
+        /// <param name="abobject"></param>
+        /// <param name="volumeMultiplier"></param>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
         public static AudioBuddySpeaker AttachSound(AudioBuddyObject abobject, float volumeMultiplier, GameObject speaker)
         {
             AudioSource source = speaker.AddComponent<AudioSource>();
@@ -189,7 +379,11 @@ namespace AudioBuddyTool
             player.PlaySound(abobject, volumeMultiplier);
             return player;
         }
-        
+        /// <summary>
+        /// AudioBuddy returns the sound object with the same name identifier or throws an exception if no sound with that name could be found
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static AudioBuddyObject FindSoundByName(string name)
         {
             //TODO improve by caching library of all AudioBuddySound objects in import manager database
@@ -203,6 +397,9 @@ namespace AudioBuddyTool
         
         //Resources
         private static AudioBuddyManager _manager;
+        /// <summary>
+        /// The AudioBuddy manager responsible for the scene
+        /// </summary>
         public static AudioBuddyManager Manager
         {
             get
@@ -216,6 +413,9 @@ namespace AudioBuddyTool
         }
 
         private static AudioBuddyImportManager _importer;
+        /// <summary>
+        /// The AudioBuddy importer. Only available in the editor.
+        /// </summary>
         public static AudioBuddyImportManager Importer
         {
             get
@@ -242,19 +442,24 @@ namespace AudioBuddyTool
             }
         } 
         
-                private static AudioBuddyReferenceManager _referencer;
-                public static AudioBuddyReferenceManager Referencer
+        private static AudioBuddyReferenceManager _referencer;
+        /// <summary>
+        /// AudioBuddys internal reference manager for tasks in the editor
+        /// </summary>
+        public static AudioBuddyReferenceManager Referencer
+        {
+            get
+            {
+                if (_referencer == null)
                 {
-                    get
-                    {
-                        if (_referencer == null)
-                        {
-                            _referencer = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
-                        }
-                        return _referencer;
-                    }
+                    _referencer = Resources.Load<AudioBuddyReferenceManager>("AudioBuddyReferenceManager");
                 }
-                       
+                return _referencer;
+            }
+        }
+        /// <summary>
+        /// Forces AudioBuddy to relink with the importer. Only works in editor.
+        /// </summary>
         public static void RelinkImporter()
         {
             if (Importer == null)

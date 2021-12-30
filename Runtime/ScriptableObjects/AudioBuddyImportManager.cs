@@ -76,6 +76,9 @@ namespace AudioBuddyTool
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Clears the internal database and readds every AudioBuddyObject asset in the project. Only works in editor.
+        /// </summary>
         public void RescanAudioBuddyObjects()
         {
             ABObjectCollection.Clear();
@@ -87,6 +90,10 @@ namespace AudioBuddyTool
                 //ABDatabase[soundObject.Name] = soundObject;
             }
         }
+        /// <summary>
+        /// Returns a list of all AudioClip assets in the project. Only works in editor.
+        /// </summary>
+        /// <returns></returns>
         public List<AudioClip> FindAllClips()
         {
             List<AudioClip> allClips = new List<AudioClip>();
@@ -96,7 +103,10 @@ namespace AudioBuddyTool
             }
             return allClips;
         }
-
+        /// <summary>
+        /// Returns a list of all AudioBuddyObject assets in the project. Only works in editor.
+        /// </summary>
+        /// <returns></returns>
         public List<AudioBuddyObject> FindAllABObjects()
         {
             List<AudioBuddyObject> allObjects = new List<AudioBuddyObject>();
@@ -106,7 +116,9 @@ namespace AudioBuddyTool
             }
             return allObjects;
         }
-
+        /// <summary>
+        /// Compares all AudioClip and AudioBuddySound assets in the project and creates AudioBuddySound assets for every AudioClip that is not part of the databse yet. Only works in editor.
+        /// </summary>
         public void CreateMissingAudioBuddyObjects()
         {
             EnsureAssetDBPath();
@@ -132,7 +144,11 @@ namespace AudioBuddyTool
             DiscoverAudioBuddyObjects();
             Debug.Log($"Added {newObjectCounter} new Audio buddy Sounds to database at {CollectionAddress}");
         }
-
+        /// <summary>
+        /// Allows for the manual creation of an AudioBuddySound asset based on an AudioClip. Only works in editor.
+        /// </summary>
+        /// <param name="clip"></param>
+        /// <returns></returns>
         public AudioBuddySound CreateAudioBuddySoundFromClip(AudioClip clip)
         {
             AudioBuddySound absound = CreateInstance<AudioBuddySound>();
@@ -141,7 +157,9 @@ namespace AudioBuddyTool
             AssetDatabase.CreateAsset(absound, $"{CollectionAddress}/{clip.name}.asset");
             return absound;
         }
-
+        /// <summary>
+        /// Scans the project for AudioBuddyObject assets that are not in the database and adds them. Will throw a warning if objects with duplicate names are found. Only works in editor.
+        /// </summary>
         public void DiscoverAudioBuddyObjects()
         {
             foreach (AudioBuddyObject foundObject in FindAllABObjects().Where(o => !ABObjectCollection.Contains(o)))
@@ -159,7 +177,9 @@ namespace AudioBuddyTool
             }
             EnsureAssetDBPath();
         }
-
+        /// <summary>
+        /// Permanently deletes all AudioBuddyObjects and rebuilds AudioBuddySound objects from all available AudioClip assets in the project. This means that all settings on individual objects and randomizers and lists will be gone. Use with caution. Only works in editor.
+        /// </summary>
         public void RebuildAudioBuddyObjectCollection()
         {
             if (AssetDatabase.IsValidFolder(CollectionAddress))
@@ -210,7 +230,10 @@ namespace AudioBuddyTool
                 }
             }
         }
-
+        /// <summary>
+        /// Marks an AudioBuddyObject as potentially faulty to the importer to set it up for deletion by the user. Only works in editor.
+        /// </summary>
+        /// <param name="abobject"></param>
         public void RegisterFaultyABObject(AudioBuddyObject abobject)
         {
             if (!_faultyABOjects.Contains(abobject))
@@ -218,13 +241,18 @@ namespace AudioBuddyTool
                 _faultyABOjects.Add(abobject);
             }
         }
-
+        /// <summary>
+        /// Deletes all AudioBuddyObject assets that were marked as faulty permanently. Only works in editor.
+        /// </summary>
         public void DeleteFaultyABObjects()
         {
             DeletePartOfDatabase(FaultyABObjects);
             Debug.LogWarning("Deleted AudioBuddyObjects marked as faulty");
         }
-
+        /// <summary>
+        /// Deletes all AudioBuddyObject assets that are fed into the method as a list permanently. Use with caution. Only works in editor.
+        /// </summary>
+        /// <param name="toBeDeleted"></param>
         private void DeletePartOfDatabase(List<AudioBuddyObject> toBeDeleted)
         {
             List<string> deleteFailed = new List<string>();
@@ -240,6 +268,11 @@ namespace AudioBuddyTool
             toBeDeleted.Clear();
         }
         #endif
+        /// <summary>
+        /// Returns the part of an asset path that contains only the adress of the asset folder
+        /// </summary>
+        /// <param name="origPath"></param>
+        /// <returns></returns>
         protected string TrimAssetPath(string origPath)
         {
             bool backfound = false;
