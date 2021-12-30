@@ -39,7 +39,7 @@ namespace AudioBuddyTool
             }
         }
         private List<AudioBuddyObject> _faultyABOjects = new List<AudioBuddyObject>();
-        private Dictionary<AudioBuddySound, string> SoundsCreatedThroughImport = new Dictionary<AudioBuddySound, string>();
+        public Dictionary<AudioBuddySound, string> SoundsCreatedThroughImport = new Dictionary<AudioBuddySound, string>();
 
         /// <summary>
         /// Do not use this. The dictionary has not been fully implemented yet. Use ABObjectCollection instead
@@ -64,7 +64,7 @@ namespace AudioBuddyTool
         [SerializeField]
         private Dictionary<string, AudioBuddyObject> _abDatabase;
         public bool Linked;
-        public bool CreateABOjectsOnClipImport = false;
+        public bool CreateABOjectsOnClipImport = true;
 
         public void OnEnable()
         {

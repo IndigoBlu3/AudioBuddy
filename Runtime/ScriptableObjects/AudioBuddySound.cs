@@ -16,24 +16,26 @@ namespace AudioBuddyTool
         private AudioClip _file;
         public bool IsLoop;
         public bool CustomName;
+        private bool _faulty;
         [SerializeField]
         public string FilePath;
         public AudioClip File
         {
             get
             {
-                if (_file == null && FilePath != "")
+                if (_file == null && !_faulty)
                 {
 #if UNITY_EDITOR
+                    if (FilePath == "" && AudioBuddy.Importer.SoundsCreatedThroughImport.ContainsKey(this))
+                    {
+                        FilePath = AudioBuddy.Importer.SoundsCreatedThroughImport[this];
+                    }
                     _file = AssetDatabase.LoadAssetAtPath<AudioClip>(FilePath);
-                    Debug.Log($"Recover from Path {FilePath}");
+                    //Debug.Log($"Recovered from Path {FilePath}");
                     if (_file == null)
                     {
                         AudioBuddy.Importer.RegisterFaultyABObject(this);
-                    }
-                    //else
-                    {
-                        //Debug.Log($"Retrieved {File}");
+                        _faulty = true;
                     }
 #endif
                 }
@@ -46,7 +48,8 @@ namespace AudioBuddyTool
                 if (File != null)
                 {
                     FilePath = AssetDatabase.GetAssetPath(File);
-                    Debug.Log($"Set from file to {FilePath}");
+                    //Debug.Log($"Set from file to {FilePath}");
+                    _faulty = false;
                 }
 #endif
             }

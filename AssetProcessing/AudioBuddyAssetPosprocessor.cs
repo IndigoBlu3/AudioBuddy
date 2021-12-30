@@ -9,7 +9,7 @@ namespace AudioBuddyTool
     public class AudioBuddyAssetPosprocessor : AssetPostprocessor
     {
         AudioBuddyImportManager abImportManager;
-        void OnPostprocessAudio(AudioClip clip)
+        void OnPostprocessAudio(AudioClip clip) //Is called when assets are imported but also when they are reimported
         {
             abImportManager ??= AudioBuddy.Importer;
             if (abImportManager.CreateABOjectsOnClipImport && AssetDatabase.IsValidFolder(abImportManager.CollectionAddress))
@@ -20,13 +20,14 @@ namespace AudioBuddyTool
                 AssetDatabase.CreateAsset(absound, $"{abImportManager.CollectionAddress}/{clipName}.asset");
                 abImportManager.ABObjectCollection.Add(absound);
                 absound.FilePath = assetPath;
-                Debug.Log($"Automaticall created AudioBuddySound for {absound.FilePath}");
+                abImportManager.SoundsCreatedThroughImport.Add(absound,assetPath);
+                Debug.Log($"Automatically created AudioBuddySound for {clipName} at {absound.FilePath}");
             }
         }
 
         private string ExtractAssetNameFromPath(string path)
         {
-            Debug.Log(path);
+            //Debug.Log(path);
             int dotIndex = path.Length - 1;
             while (path[dotIndex] != '.')
             {
