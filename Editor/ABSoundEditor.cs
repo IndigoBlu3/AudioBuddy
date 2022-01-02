@@ -74,7 +74,7 @@ namespace AudioBuddyTool
             soundObject.MixerGroupOverride = (AudioMixerGroup)EditorGUILayout.ObjectField("Mixer Override", soundObject.MixerGroupOverride, typeof(AudioMixerGroup), false);
             EditorGUILayout.LabelField($"File Path: {soundObject.FilePath}",EditorStyles.label);
             
-            EditorGUILayout.HelpBox("There are some heavy changes happening to how sound objects work in the background. Everything below this message is experimental.",MessageType.Info);
+            EditorGUILayout.HelpBox("There are some heavy changes happening to how sound objects and speakers work in the background. Everything below this message is experimental.",MessageType.Info);
             EditorGUILayout.CurveField("Kurve", soundObject.Kurva);
             AudioCurveRendering.DrawCurve(EditorGUILayout.GetControlRect(), soundObject.Kurva.Evaluate, Color.red);
 
