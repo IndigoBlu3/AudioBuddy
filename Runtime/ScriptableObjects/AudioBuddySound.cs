@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,14 +12,37 @@ namespace AudioBuddyTool
     [Serializable]
     public class AudioBuddySound : AudioBuddyObject
     {
-
-        [SerializeField]
-        private AudioClip _file;
         public bool IsLoop;
         public bool CustomName;
         private bool _faulty;
         [SerializeField]
         public string FilePath;
+        private AudioMixerGroup _mixerGroup;
+        public AudioMixerGroup MixerGroupOverride 
+        { 
+            get 
+            {
+                return _mixerGroup;
+            }
+            set
+            {
+                _mixerGroup = value;
+            }
+        }
+        public AnimationCurve Kurva
+        {
+            get
+            {
+                return _kurva;
+            }
+            set
+            {
+                _kurva = value;
+            }
+        }
+        private AnimationCurve _kurva;
+        [SerializeField]
+        private AudioClip _file;
         public AudioClip File
         {
             get
@@ -54,7 +78,7 @@ namespace AudioBuddyTool
 #endif
             }
         }
-
+        
 
         public override float GetDuration()
         {

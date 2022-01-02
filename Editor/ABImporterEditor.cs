@@ -31,7 +31,7 @@ namespace AudioBuddyTool
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Audio Buddy Import Manager", EditorStyles.whiteLargeLabel);
-                EditorGUILayout.LabelField("Build: a1230", AudioBuddy.RightAligned);
+                EditorGUILayout.LabelField("Build: b0102", AudioBuddy.RightAligned);
                 EditorGUILayout.EndHorizontal();
             } //Title
             {

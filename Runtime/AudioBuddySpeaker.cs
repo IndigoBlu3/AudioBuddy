@@ -97,7 +97,7 @@ namespace AudioBuddyTool
         /// </summary>
         /// <param name="soundObject"></param>
         /// <param name="volumeMultiplier"></param>
-        public void PlaySound(AudioBuddyObject soundObject, float volumeMultiplier)
+        public void PlaySound(AudioBuddyObject soundObject, float volumeMultiplier) //Is always called when a sound is played
         {
             _externalVolumeMultipilier = volumeMultiplier * soundObject.Volume;
             switch (soundObject)
@@ -139,6 +139,7 @@ namespace AudioBuddyTool
             SourcePlayer.clip = sound.File;
             SourcePlayer.volume = sound.Volume * _externalVolumeMultipilier * _internalVolumeMultipilier;
             SourcePlayer.pitch = sound.Pitch;
+            SourcePlayer.outputAudioMixerGroup = sound.MixerGroupOverride;
             SourcePlayer.Play();
         }
 
