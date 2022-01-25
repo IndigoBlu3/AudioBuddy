@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace AudioBuddyTool
 {
-    [CreateAssetMenu(fileName = "Sound Audio Buddy", menuName = "AudioBuddy/Simple Sound")]
+    [CreateAssetMenu(fileName = "Sound AudioBuddy", menuName = "AudioBuddy/Simple Sound")]
     [Serializable]
     public class AudioBuddySound : AudioBuddyObject
     {

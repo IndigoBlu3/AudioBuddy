@@ -40,7 +40,22 @@ namespace AudioBuddyTool
         }
         private List<AudioBuddyObject> _faultyABOjects = new List<AudioBuddyObject>();
         public Dictionary<AudioBuddySound, string> SoundsCreatedThroughImport = new Dictionary<AudioBuddySound, string>();
-
+        public List<AudioBuddySpeakerSetting> ABSettingsCollection
+        {
+            get
+            {
+                if (_absettingscollection == null)
+                {
+                    _absettingscollection = new List<AudioBuddySpeakerSetting>();
+                }
+                return _absettingscollection;
+            }
+            set
+            {
+                _absettingscollection = value;
+            }
+        }
+        private List<AudioBuddySpeakerSetting> _absettingscollection = new List<AudioBuddySpeakerSetting>();
         /// <summary>
         /// Do not use this. The dictionary has not been fully implemented yet. Use ABObjectCollection instead
         /// </summary>

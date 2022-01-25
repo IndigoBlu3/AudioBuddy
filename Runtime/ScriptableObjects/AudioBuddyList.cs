@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AudioBuddyTool
 {
-    [CreateAssetMenu(fileName = "Sound List Audio Buddy", menuName = "AudioBuddy/Sound List")]
+    [CreateAssetMenu(fileName = "Sound List AudioBuddy", menuName = "AudioBuddy/Sound List")]
     public class AudioBuddyList : AudioBuddyObject
     {
         public List<BuddyListEntry> SoundList
