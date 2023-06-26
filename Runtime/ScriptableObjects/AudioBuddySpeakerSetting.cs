@@ -7,6 +7,13 @@ namespace AudioBuddyTool
     public class AudioBuddySpeakerSetting : MonoBehaviour
     {
         public bool PreLoad = false;
+        public bool hasSettings
+        {
+            get
+            {
+                return AudioSettings == null;
+            }
+        }
         private AudioSource _audioSettings;
         [HideInInspector]
         public AudioSource AudioSettings
@@ -19,6 +26,22 @@ namespace AudioBuddyTool
             set
             {
                 _audioSettings = value;
+            }
+        }
+        private AnimationCurve _customRollofCurve;
+        public AnimationCurve CustomRollofCurve
+        {
+            get
+            {
+                if (_customRollofCurve == null)
+                {
+                    _customRollofCurve = new AnimationCurve();
+                }
+                return _customRollofCurve;
+            }
+            set
+            {
+                _customRollofCurve = value;
             }
         }
 
@@ -36,6 +59,11 @@ namespace AudioBuddyTool
                     _audioSettings = gameObject.AddComponent<AudioSource>();
                 }
             }
+        }
+
+        public void Awake()
+        {
+            AudioSettings.SetCustomCurve(AudioSourceCurveType.Spread ,AnimationCurve.Linear(0,0,0,0));
         }
 
         public void OnEnable()

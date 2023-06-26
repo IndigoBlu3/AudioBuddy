@@ -10,8 +10,8 @@ namespace AudioBuddyTool
     public class ABImporterEditor : Editor
     {
         AudioBuddyImportManager importer;
-        public enum SortType { Name, Length, Type };
-        private SortType _sortMode;
+        public enum ABSortType { Name, Length, Type };
+        private ABSortType _nextSortMode;
         private string _sortText;
         private bool _showDatabase;
         private bool _confirmRebuild;
@@ -92,21 +92,21 @@ namespace AudioBuddyTool
                 EditorGUILayout.LabelField("Sounds in database:", EditorStyles.boldLabel);
                 if (GUILayout.Button($"Sorted by {_sortText}"))
                 {
-                    switch (_sortMode)
+                    switch (_nextSortMode)
                     {
-                        case SortType.Name:
+                        case ABSortType.Name:
                             importer.ABObjectCollection = importer.ABObjectCollection.OrderBy(n => n.name).ToList();
-                            _sortMode = SortType.Length;
+                            _nextSortMode = ABSortType.Length;
                             _sortText = "name";
                             break;
-                        case SortType.Length:
+                        case ABSortType.Length:
                             importer.ABObjectCollection = importer.ABObjectCollection.OrderBy(d => d.GetDuration()).ToList();
-                            _sortMode = SortType.Type;
+                            _nextSortMode = ABSortType.Type;
                             _sortText = "length";
                             break;
-                        case SortType.Type:
+                        case ABSortType.Type:
                             importer.ABObjectCollection = importer.ABObjectCollection.OrderBy(t => t.GetType().ToString()).ToList();
-                            _sortMode = SortType.Name;
+                            _nextSortMode = ABSortType.Name;
                             _sortText = "type";
                             break;
                         default:
